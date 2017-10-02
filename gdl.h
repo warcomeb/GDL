@@ -135,4 +135,23 @@ void GDL_drawLine (GDL_Device* dev,
                    uint16_t yStop,
                    uint8_t color);
 
+/**
+ * The function draw a rectangle. It can be fill or not.
+ *
+ * @param[in] dev The handle of the device
+ * @param[in] xStart The starting x position
+ * @param[in] yStart The starting y position
+ * @param[in] width The ending x position
+ * @param[in] height The ending y position
+ * @param[in] color The color of the rectangle
+ * @param[in] isFill If TRUE the rectangle will be fill
+ */
+void GDL_drawRectangle (GDL_Device* dev,
+                        uint16_t xStart,
+                        uint16_t yStart,
+                        uint16_t width,
+                        uint16_t height,
+                        uint8_t color,
+                        bool isFill);
+
 #endif /* __WARCOMEB_GDL_H */

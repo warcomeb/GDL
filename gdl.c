@@ -69,8 +69,15 @@ void GDL_drawLine (GDL_Device* dev,
 
     int16_t d = 2 * dy - dx;
 
-    for (uint16_t i = 0; i < dx; ++i)
+    for (uint16_t i = 0; i <= dx; ++i)
     {
+        // Print pixel
+        if (!inverte)
+            dev->drawPixel(dev,xStart,yStart,color);
+        else
+            dev->drawPixel(dev,yStart,xStart,color);
+
+        // Set next point
         if (d > 0)
         {
             d = d - 2 * dx + 2 * dy;
@@ -81,9 +88,37 @@ void GDL_drawLine (GDL_Device* dev,
             d = 2 * dy + d;
         }
         xStart++;
-        if (!inverte)
-            dev->drawPixel(dev,xStart,yStart,color);
-        else
-            dev->drawPixel(dev,yStart,xStart,color);
     }
+}
+
+void GDL_drawRectangle (GDL_Device* dev,
+                        uint16_t xStart,
+                        uint16_t yStart,
+                        uint16_t width,
+                        uint16_t height,
+                        uint8_t color,
+                        bool isFill)
+{
+    uint16_t xStop = xStart + width;
+    uint16_t yStop = yStart + height;
+
+    if (!isFill)
+    {
+        // Draw the border
+        GDL_drawLine(dev,xStart,yStart,xStop,yStart,color);
+        GDL_drawLine(dev,xStart,yStart,xStart,yStop,color);
+        GDL_drawLine(dev,xStart,yStop,xStop,yStop,color);
+        GDL_drawLine(dev,xStop,yStart,xStop,yStop,color);
+    }
+    else
+    {
+        for (; yStart <= yStop; ++yStart)
+        {
+            GDL_drawLine(dev,xStart,yStart,xStop,yStart,color);
+        }
+    }
+
+
+
+
 }
