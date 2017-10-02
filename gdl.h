@@ -117,6 +117,9 @@ typedef struct _GDL_Device
 /**
  * The function print a line in the selected position with the selected
  * color.
+ * The function use Bresenham's algorithm. You can find on Wikipedia!
+ * @see https://it.wikipedia.org/wiki/Algoritmo_della_linea_di_Bresenham
+ * @see https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
  *
  * @param[in] dev The handle of the device
  * @param[in] xStart The starting x position
@@ -126,10 +129,10 @@ typedef struct _GDL_Device
  * @param[in] color The color of the line
  */
 void GDL_drawLine (GDL_Device* dev,
-                   uint8_t xStart,
-                   uint8_t yStart,
-                   uint8_t xStop,
-                   uint8_t yStop,
+                   uint16_t xStart,
+                   uint16_t yStart,
+                   uint16_t xStop,
+                   uint16_t yStop,
                    uint8_t color);
 
 #endif /* __WARCOMEB_GDL_H */
