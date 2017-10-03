@@ -107,6 +107,9 @@ typedef struct _GDL_Device
 
     bool chargePump;      /**< Flag to enable or not the internal charge pump */
 
+    bool useCustomFont; /**< Flag to show if user want use custom font or not */
+    uint8_t fontSize;             /**< Font size setted by user: 1 is default */
+
     void (*delayTime)(uint32_t delay);       /**< Function for blocking delay */
 
     /** Callback for drawPixel function implemented into device implementation */
@@ -153,5 +156,28 @@ void GDL_drawRectangle (GDL_Device* dev,
                         uint16_t height,
                         uint8_t color,
                         bool isFill);
+
+/**
+ * The function print a char in the selected position with the selected
+ * color, background and size.
+ * The starting point is the top-left corner of the char.
+ *
+ * @param[in] dev The handle of the device
+ * @param[in] xPos The x position
+ * @param[in] yPos The y position
+ * @param[in] c The char to be draw
+ * @param[in] color The foreground color of the char
+ * @param[in] background The background color of the char
+ * @param[in] size The size for the char, if 0 use default dimension
+ * @return GDL_ERRORS_WRONG_POSITION if the dimension plus position of the char
+ *         exceeds the width or height of the display, GDL_ERRORS_OK otherwise.
+ */
+GDL_Errors GDL_drawChar (GDL_Device* dev,
+                         uint16_t xPos,
+                         uint16_t yPos,
+                         uint8_t c,
+                         uint8_t color,
+                         uint8_t background,
+                         uint8_t size);
 
 #endif /* __WARCOMEB_GDL_H */
