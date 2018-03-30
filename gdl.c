@@ -359,8 +359,8 @@ void GDL_drawRectangle (GDL_Device* dev,
                         uint8_t color,
                         bool isFill)
 {
-    uint16_t xStop = xStart + width;
-    uint16_t yStop = yStart + height;
+    uint16_t xStop = xStart + width - 1;
+    uint16_t yStop = yStart + height - 1;
 
     if (!isFill)
     {
