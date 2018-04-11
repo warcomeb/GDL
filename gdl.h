@@ -56,6 +56,9 @@
 #error "You must enable the SPI peripheral"
 #endif
 
+#define GDL_DEFAULT_FONT_WIDTH           6
+#define GDL_DEFAULT_FONT_HEIGHT          8
+
 typedef enum _GDL_ModelType
 {
     GDL_MODELTYPE_SSD1306   = 0x0100,
@@ -69,6 +72,7 @@ typedef enum _GDL_Errors
 {
     GDL_ERRORS_OK,
     GDL_ERRORS_WRONG_POSITION,
+    GDL_ERRORS_WRONG_VALUE,
 } GDL_Errors;
 
 typedef struct _GDL_Device

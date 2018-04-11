@@ -394,14 +394,14 @@ GDL_Errors GDL_drawChar (GDL_Device* dev,
     if (!dev->useCustomFont)
     {
         // Check if the char is out of border!
-        if(((xPos + 6 * size) >= dev->width)  ||
-           ((yPos + 8 * size) >= dev->height))
+        if(((xPos + GDL_DEFAULT_FONT_WIDTH * size) >= dev->width)  ||
+           ((yPos + GDL_DEFAULT_FONT_HEIGHT * size) >= dev->height))
             return GDL_ERRORS_WRONG_POSITION;
 
-        for (uint8_t i=0; i < 6; i++)
+        for (uint8_t i=0; i < GDL_DEFAULT_FONT_WIDTH; i++)
         {
             uint8_t line = GDL_basicFont[c][i];
-            for (uint8_t j = 0; j < 8; ++j, line <<= 1)
+            for (uint8_t j = 0; j < GDL_DEFAULT_FONT_HEIGHT; ++j, line <<= 1)
             {
                 if (line & 0x80)
                 {
