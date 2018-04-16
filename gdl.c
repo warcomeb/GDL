@@ -433,7 +433,7 @@ GDL_Errors GDL_drawPicture (GDL_Device* dev,
                             uint16_t yPos,
                             uint16_t width,
                             uint16_t height,
-                            uint8_t* picture,
+                            const uint8_t* picture,
                             GDL_PictureType pixelType)
 {
     // Check if the char is out of border!
@@ -447,15 +447,17 @@ GDL_Errors GDL_drawPicture (GDL_Device* dev,
     else if (pixelType == GDL_PICTURETYPE_4BIT)
     {
         uint16_t tempWidth = width/2;
+        uint16_t x,y;
 
-        for (uint16_t y = yPos; y < (yPos + height); y++)
+        for (y = yPos; y < (yPos + height); y++)
         {
-            for (uint16_t x = xPos; x < (xPos + tempWidth); x++)
+            for (x = xPos; x < (xPos + tempWidth); x++)
             {
-                dev->drawPixel(dev,xPos + (x * 2)    ,yPos + y,(picture[tempWidth*(y-yPos)+(x-xPos)] & 0xF0) >> 4);
-                dev->drawPixel(dev,xPos + (x * 2) + 1,yPos + y,(picture[tempWidth*(y-yPos)+(x-xPos)] & 0x0F));
+                dev->drawPixel(dev,(x * 2)    ,y,(picture[tempWidth*(y-yPos)+(x-xPos)] & 0xF0) >> 4);
+                dev->drawPixel(dev,(x * 2) + 1,y,(picture[tempWidth*(y-yPos)+(x-xPos)] & 0x0F));
             }
         }
         return GDL_ERRORS_OK;
     }
+    return GDL_ERRORS_WRONG_VALUE;
 }

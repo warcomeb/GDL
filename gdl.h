@@ -215,7 +215,7 @@ GDL_Errors GDL_drawPicture (GDL_Device* dev,
                             uint16_t yPos,
                             uint16_t width,
                             uint16_t height,
-                            uint8_t* picture,
+                            const uint8_t* picture,
                             GDL_PictureType pixelType);
 
 #endif /* __WARCOMEB_GDL_H */
