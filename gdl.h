@@ -64,7 +64,6 @@ typedef enum _GDL_ModelType
     GDL_MODELTYPE_SSD1306   = 0x0100,
     GDL_MODELTYPE_SSD1325   = 0x0200,
 	GDL_MODELTYPE_SSD1327ZB = 0x0300,
-	GDL_MODELTYPE_SSD1325Z2 = 0x0400,
 
 } GDL_ModelType;
 
@@ -74,6 +73,14 @@ typedef enum _GDL_Errors
     GDL_ERRORS_WRONG_POSITION,
     GDL_ERRORS_WRONG_VALUE,
 } GDL_Errors;
+
+typedef enum _GDL_PictureType
+{
+    GDL_PICTURETYPE_1BIT  = 1,
+    GDL_PICTURETYPE_4BIT  = 4,
+    GDL_PICTURETYPE_8BIT  = 8,
+    GDL_PICTURETYPE_24BIT = 24,
+} GDL_PictureType;
 
 typedef struct _GDL_Device
 {
@@ -185,5 +192,30 @@ GDL_Errors GDL_drawChar (GDL_Device* dev,
                          uint8_t color,
                          uint8_t background,
                          uint8_t size);
+
+/**
+ * The function print a picture from an array of pixel, in the selected
+ * position.
+ * Every pixel can be described from 1, 4, 8 or 24 bit.
+ * The starting point is the top-left corner of the picture.
+ *
+ * @param[in] dev The handle of the device
+ * @param[in] xPos The x position
+ * @param[in] yPos The y position
+ * @param[in] width The picture dimension along the x axis
+ * @param[in] height The picture dimension along the y axis
+ * @param[in] picture The array of picture to be printed
+ * @param[in] pixelType The number of bit for each pixel. This value represent the
+ *                      number of color
+ * @return GDL_ERRORS_WRONG_POSITION if the dimension plus position of the picture
+ *         exceeds the width or height of the display, GDL_ERRORS_OK otherwise.
+ */
+GDL_Errors GDL_drawPicture (GDL_Device* dev,
+                            uint16_t xPos,
+                            uint16_t yPos,
+                            uint16_t width,
+                            uint16_t height,
+                            uint8_t* picture,
+                            GDL_PictureType pixelType);
 
 #endif /* __WARCOMEB_GDL_H */

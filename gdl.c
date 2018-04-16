@@ -427,3 +427,35 @@ GDL_Errors GDL_drawChar (GDL_Device* dev,
         return GDL_ERRORS_OK;
     }
 }
+
+GDL_Errors GDL_drawPicture (GDL_Device* dev,
+                            uint16_t xPos,
+                            uint16_t yPos,
+                            uint16_t width,
+                            uint16_t height,
+                            uint8_t* picture,
+                            GDL_PictureType pixelType)
+{
+    // Check if the char is out of border!
+    if(((xPos + width) > dev->width) || ((yPos + height) > dev->height))
+        return GDL_ERRORS_WRONG_POSITION;
+
+    if (pixelType == GDL_PICTURETYPE_1BIT)
+    {
+        // TODO
+    }
+    else if (pixelType == GDL_PICTURETYPE_4BIT)
+    {
+        uint16_t tempWidth = width/2;
+
+        for (uint16_t y = yPos; y < (yPos + height); y++)
+        {
+            for (uint16_t x = xPos; x < (xPos + tempWidth); x++)
+            {
+                dev->drawPixel(dev,xPos + (x * 2)    ,yPos + y,(picture[tempWidth*(y-yPos)+(x-xPos)] & 0xF0) >> 4);
+                dev->drawPixel(dev,xPos + (x * 2) + 1,yPos + y,(picture[tempWidth*(y-yPos)+(x-xPos)] & 0x0F));
+            }
+        }
+        return GDL_ERRORS_OK;
+    }
+}
