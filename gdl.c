@@ -1,6 +1,6 @@
-/******************************************************************************
+/*
  * GDL - Graphics Display Library for libohiboard
- * Copyright (C) 2017 Marco Giammarini
+ * Copyright (C) 2017-2019 Marco Giammarini
  *
  * Authors:
  *  Marco Giammarini <m.giammarini@warcomeb.it>
@@ -23,17 +23,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- ******************************************************************************/
+ */
+
+/*!
+ * \file  /gdl.c
+ * \brief
+ */
 
 #include "gdl.h"
 
 #include <stdlib.h>
-
-#define GDL_SWAP_INT16(a,b) do { \
-    int16_t t = a;               \
-    a = b;                       \
-    b = t;                       \
-    } while (0);
 
 /** Generic font */
 static const char GDL_BASIC_FONT[256][6]=
@@ -310,15 +309,15 @@ void GDL_drawLine (GDL_DeviceHandle_t dev,
 
     if (abs(dx) < abs(dy))
     {
-        GDL_SWAP_INT16(xStart, yStart);
-        GDL_SWAP_INT16(xStop, yStop);
+        UTILITY_SWAP_INT16(xStart, yStart);
+        UTILITY_SWAP_INT16(xStop, yStop);
         inverte = TRUE;
     }
 
     if (xStart > xStop)
     {
-        GDL_SWAP_INT16(xStart, xStop);
-        GDL_SWAP_INT16(yStart, yStop);
+        UTILITY_SWAP_INT16(xStart, xStop);
+        UTILITY_SWAP_INT16(yStart, yStop);
     }
 
     // Update dx and dy
@@ -333,9 +332,13 @@ void GDL_drawLine (GDL_DeviceHandle_t dev,
     {
         // Print pixel
         if (!inverte)
+        {
             dev->drawPixel(dev,xStart,yStart,color);
+        }
         else
+        {
             dev->drawPixel(dev,yStart,xStart,color);
+        }
 
         // Set next point
         if (d > 0)
@@ -380,23 +383,27 @@ void GDL_drawRectangle (GDL_DeviceHandle_t dev,
 }
 
 GDL_Errors_t GDL_drawChar (GDL_DeviceHandle_t dev,
-                         uint16_t xPos,
-                         uint16_t yPos,
-                         uint8_t c,
-                         uint8_t color,
-                         uint8_t background,
-                         uint8_t size)
+                           uint16_t xPos,
+                           uint16_t yPos,
+                           uint8_t c,
+                           uint8_t color,
+                           uint8_t background,
+                           uint8_t size)
 {
     // Use default size
-    if (size == 0)
-        size = dev->fontSize;
+    if (size == GDL_USE_DEFAULT_FONT_SIZE)
+    {
+        size = GDL_DEFAULT_FONT_SIZE;
+    }
 
     if (!dev->useCustomFont)
     {
         // Check if the char is out of border!
         if(((xPos + GDL_DEFAULT_FONT_WIDTH * size) >= dev->width)  ||
            ((yPos + GDL_DEFAULT_FONT_HEIGHT * size) >= dev->height))
+        {
             return GDL_ERRORS_WRONG_POSITION;
+        }
 
         for (uint8_t i=0; i < GDL_DEFAULT_FONT_WIDTH; i++)
         {
@@ -405,17 +412,25 @@ GDL_Errors_t GDL_drawChar (GDL_DeviceHandle_t dev,
             {
                 if (line & 0x80)
                 {
-                    if (size == 1)
+                    if (size == GDL_DEFAULT_FONT_SIZE)
+                    {
                         dev->drawPixel(dev,xPos + i,yPos + j,color);
+                    }
                     else
+                    {
                         GDL_drawRectangle(dev,(xPos + i * size),(yPos + j * size),size,size,color,TRUE);
+                    }
                 }
                 else
                 {
-                    if (size == 1)
+                    if (size == GDL_DEFAULT_FONT_SIZE)
+                    {
                         dev->drawPixel(dev,xPos + i,yPos + j,background);
+                    }
                     else
+                    {
                         GDL_drawRectangle(dev,(xPos + i * size),(yPos + j * size),size,size,background,TRUE);
+                    }
 
                 }
             }
@@ -429,12 +444,12 @@ GDL_Errors_t GDL_drawChar (GDL_DeviceHandle_t dev,
 }
 
 GDL_Errors_t GDL_drawPicture (GDL_DeviceHandle_t dev,
-                            uint16_t xPos,
-                            uint16_t yPos,
-                            uint16_t width,
-                            uint16_t height,
-                            const uint8_t* picture,
-                            GDL_PictureType_t pixelType)
+                              uint16_t xPos,
+                              uint16_t yPos,
+                              uint16_t width,
+                              uint16_t height,
+                              const uint8_t* picture,
+                              GDL_PictureType_t pixelType)
 {
     // Check if the char is out of border!
     if(((xPos + width) > dev->width) || ((yPos + height) > dev->height))

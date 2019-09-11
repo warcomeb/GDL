@@ -44,7 +44,7 @@ typedef enum _GDL_ModelType_t
     GDL_MODELTYPE_SSD1325   = 0x0200,
 	GDL_MODELTYPE_SSD1327ZB = 0x0300,
 
-} GDL_ModelType_t;
+} __packed GDL_ModelType_t;
 
 typedef enum _GDL_Errors_t
 {

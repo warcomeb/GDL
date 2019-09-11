@@ -76,6 +76,9 @@ extern "C" {
 #define GDL_DEFAULT_FONT_HEIGHT                  8
 #endif
 
+#define GDL_USE_DEFAULT_FONT_SIZE                0xFF
+#define GDL_DEFAULT_FONT_SIZE                    1
+
 typedef struct _GDL_Device_t
 {
     GDL_ModelType_t model;
@@ -178,8 +181,10 @@ void GDL_drawRectangle (GDL_DeviceHandle_t dev,
  * \param[in]      color: The foreground color of the char
  * \param[in] background: The background color of the char
  * \param[in]       size: The size for the char, if 0 use default dimension
- * \return GDL_ERRORS_WRONG_POSITION if the dimension plus position of the char
- *         exceeds the width or height of the display, GDL_ERRORS_OK otherwise.
+ * \return
+ *         \arg \ref GDL_ERRORS_WRONG_POSITION if the dimension plus position of the char
+ *         exceeds the width or height of the display
+ *         \arg \ref GDL_ERRORS_SUCCESS when the operations success.
  */
 GDL_Errors_t GDL_drawChar (GDL_DeviceHandle_t dev,
                            uint16_t xPos,
@@ -203,8 +208,10 @@ GDL_Errors_t GDL_drawChar (GDL_DeviceHandle_t dev,
  * \param[in]   picture: The array of picture to be printed
  * \param[in] pixelType: The number of bit for each pixel. This value represent the
  *                       number of color
- * \return GDL_ERRORS_WRONG_POSITION if the dimension plus position of the picture
- *         exceeds the width or height of the display, GDL_ERRORS_OK otherwise.
+ * \return
+ *         \arg \ref GDL_ERRORS_WRONG_POSITION if the dimension plus position of the picture
+ *                   exceeds the width or height of the display
+ *         \arg \ref GDL_ERRORS_SUCCESS when the operations success.
  */
 GDL_Errors_t GDL_drawPicture (GDL_DeviceHandle_t dev,
                               uint16_t xPos,
