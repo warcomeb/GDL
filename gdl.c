@@ -36,7 +36,7 @@
     } while (0);
 
 /** Generic font */
-const char GDL_basicFont[256][6]=
+static const char GDL_BASIC_FONT[256][6]=
 {
     {0x00,0x00,0x00,0x00,0x00,0x00},    // 0x00
     {0x00,0x7C,0xA2,0x8A,0xA2,0x7C},    // 0x01
@@ -296,7 +296,7 @@ const char GDL_basicFont[256][6]=
     {0x00,0x00,0x00,0x00,0x00,0x00}     // 0xFF
 };
 
-void GDL_drawLine (GDL_Device* dev,
+void GDL_drawLine (GDL_DeviceHandle_t dev,
                    uint16_t xStart,
                    uint16_t yStart,
                    uint16_t xStop,
@@ -351,7 +351,7 @@ void GDL_drawLine (GDL_Device* dev,
     }
 }
 
-void GDL_drawRectangle (GDL_Device* dev,
+void GDL_drawRectangle (GDL_DeviceHandle_t dev,
                         uint16_t xStart,
                         uint16_t yStart,
                         uint16_t width,
@@ -379,7 +379,7 @@ void GDL_drawRectangle (GDL_Device* dev,
     }
 }
 
-GDL_Errors GDL_drawChar (GDL_Device* dev,
+GDL_Errors_t GDL_drawChar (GDL_DeviceHandle_t dev,
                          uint16_t xPos,
                          uint16_t yPos,
                          uint8_t c,
@@ -400,7 +400,7 @@ GDL_Errors GDL_drawChar (GDL_Device* dev,
 
         for (uint8_t i=0; i < GDL_DEFAULT_FONT_WIDTH; i++)
         {
-            uint8_t line = GDL_basicFont[c][i];
+            uint8_t line = GDL_BASIC_FONT[c][i];
             for (uint8_t j = 0; j < GDL_DEFAULT_FONT_HEIGHT; ++j, line <<= 1)
             {
                 if (line & 0x80)
@@ -420,21 +420,21 @@ GDL_Errors GDL_drawChar (GDL_Device* dev,
                 }
             }
         }
-        return GDL_ERRORS_OK;
+        return GDL_ERRORS_SUCCESS;
     }
     else
     {
-        return GDL_ERRORS_OK;
+        return GDL_ERRORS_SUCCESS;
     }
 }
 
-GDL_Errors GDL_drawPicture (GDL_Device* dev,
+GDL_Errors_t GDL_drawPicture (GDL_DeviceHandle_t dev,
                             uint16_t xPos,
                             uint16_t yPos,
                             uint16_t width,
                             uint16_t height,
                             const uint8_t* picture,
-                            GDL_PictureType pixelType)
+                            GDL_PictureType_t pixelType)
 {
     // Check if the char is out of border!
     if(((xPos + width) > dev->width) || ((yPos + height) > dev->height))
@@ -457,7 +457,7 @@ GDL_Errors GDL_drawPicture (GDL_Device* dev,
                 dev->drawPixel(dev,(x * 2) + 1,y,(picture[tempWidth*(y-yPos)+(x-xPos)] & 0x0F));
             }
         }
-        return GDL_ERRORS_OK;
+        return GDL_ERRORS_SUCCESS;
     }
     return GDL_ERRORS_WRONG_VALUE;
 }
