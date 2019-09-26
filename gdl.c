@@ -451,19 +451,50 @@ GDL_Errors_t GDL_drawPicture (GDL_DeviceHandle_t dev,
                               const uint8_t* picture,
                               GDL_PictureType_t pixelType)
 {
+    ohiassert(((xPos + width) <= dev->width) && ((yPos + height) <= dev->height));
+
     // Check if the char is out of border!
     if(((xPos + width) > dev->width) || ((yPos + height) > dev->height))
         return GDL_ERRORS_WRONG_POSITION;
 
     if (pixelType == GDL_PICTURETYPE_1BIT)
     {
-        // TODO
+        uint16_t x,y;
+        uint16_t tempWidth = width/8;
+
+        uint16_t maxWidth = xPos + width;
+
+        if (tempWidth == 0) tempWidth += 1;
+
+        for (y = yPos; y < (yPos + height); y++)
+        {
+            for (x = 0; x < tempWidth; x++)
+            {
+                    dev->drawPixel(dev,xPos + (x * 8)    ,y,(picture[tempWidth*(y-yPos)+(x-xPos)] & 0x80) >> 7);
+                if ((xPos + (x * 8) + 1) < maxWidth)
+                    dev->drawPixel(dev,xPos + (x * 8) + 1,y,(picture[tempWidth*(y-yPos)+(x-xPos)] & 0x40) >> 6);
+                if ((xPos + (x * 8) + 2) < maxWidth)
+                    dev->drawPixel(dev,xPos + (x * 8) + 2,y,(picture[tempWidth*(y-yPos)+(x-xPos)] & 0x20) >> 5);
+                if ((xPos + (x * 8) + 3) < maxWidth)
+                    dev->drawPixel(dev,xPos + (x * 8) + 3,y,(picture[tempWidth*(y-yPos)+(x-xPos)] & 0x10) >> 4);
+                if ((xPos + (x * 8) + 4) < maxWidth)
+                    dev->drawPixel(dev,xPos + (x * 8) + 4,y,(picture[tempWidth*(y-yPos)+(x-xPos)] & 0x08) >> 3);
+                if ((xPos + (x * 8) + 5) < maxWidth)
+                    dev->drawPixel(dev,xPos + (x * 8) + 5,y,(picture[tempWidth*(y-yPos)+(x-xPos)] & 0x04) >> 2);
+                if ((xPos + (x * 8) + 6) < maxWidth)
+                    dev->drawPixel(dev,xPos + (x * 8) + 6,y,(picture[tempWidth*(y-yPos)+(x-xPos)] & 0x02) >> 1);
+                if ((xPos + (x * 8) + 7) < maxWidth)
+                    dev->drawPixel(dev,xPos + (x * 8) + 7,y,(picture[tempWidth*(y-yPos)+(x-xPos)] & 0x01));
+            }
+        }
+        return GDL_ERRORS_SUCCESS;
     }
     else if (pixelType == GDL_PICTURETYPE_4BIT)
     {
         uint16_t tempWidth = width/2;
         uint16_t x,y;
 
+        // FIXME The scanning is not correct!
         for (y = yPos; y < (yPos + height); y++)
         {
             for (x = xPos; x < (xPos + tempWidth); x++)
