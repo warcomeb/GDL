@@ -38,13 +38,16 @@ extern "C" {
  * \{
  */
 
-typedef enum _GDL_ModelType_t
-{
-    GDL_MODELTYPE_SSD1306   = 0x0100,
-    GDL_MODELTYPE_SSD1325   = 0x0200,
-	GDL_MODELTYPE_SSD1327ZB = 0x0300,
-
-} __packed GDL_ModelType_t;
+/*!
+ * \defgroup GDL_Type_ModelType
+ * \{
+ */
+#define GDL_MODELTYPE_SSD1306                    0x0100
+#define GDL_MODELTYPE_SSD1325                    0x0200
+#define GDL_MODELTYPE_SSD1327ZB                  0x0300
+/*!
+ * \}
+ */
 
 typedef enum _GDL_Errors_t
 {

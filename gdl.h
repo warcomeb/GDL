@@ -57,18 +57,6 @@ extern "C" {
 
 #include "gdltype.h"
 
-#if !defined(GDL_DEFAULT_PROTOCOLTYPE)
-#error "GDL Error: You must define a communication type!"
-#endif
-
-#if ((GDL_DEFAULT_PROTOCOLTYPE == GDL_PROTOCOLTYPE_I2C) && !defined(LIBOHIBOARD_IIC))
-#error "GDL Error: You must enable the I2C peripheral"
-#endif
-
-#if ((GDL_DEFAULT_PROTOCOLTYPE == GDL_PROTOCOLTYPE_SPI) && !defined(LIBOHIBOARD_SPI))
-#error "GDL Error: You must enable the SPI peripheral"
-#endif
-
 #if !defined (GDL_DEFAULT_FONT_WIDTH)
 #define GDL_DEFAULT_FONT_WIDTH                   6
 #endif
@@ -81,48 +69,12 @@ extern "C" {
 
 typedef struct _GDL_Device_t
 {
-    GDL_ModelType_t model;
-
-#if (GDL_DEFAULT_PROTOCOLTYPE == GDL_PROTOCOLTYPE_PARALLEL)
-
-    Gpio_Pins rd;
-    Gpio_Pins dc;
-    Gpio_Pins rs;
-    Gpio_Pins cs;
-    Gpio_Pins wr;
-
-    Gpio_Pins d0;
-    Gpio_Pins d1;
-    Gpio_Pins d2;
-    Gpio_Pins d3;
-    Gpio_Pins d4;
-    Gpio_Pins d5;
-    Gpio_Pins d6;
-    Gpio_Pins d7;
-
-#elif (GDL_DEFAULT_PROTOCOLTYPE == GDL_PROTOCOLTYPE_I2C)
-
-    uint8_t address;
-
-    Iic_DeviceHandle dev;
-
-#elif (GDL_DEFAULT_PROTOCOLTYPE == GDL_PROTOCOLTYPE_SPI)
-
-#endif
-
     uint8_t width;                      /*!< Display width in number of pixel */
     uint8_t height;                    /*!< Display height in number of pixel */
 
-    uint16_t product;      /*!< It is a unique code that represent the device */
-
-    bool chargePump;      /*!< Flag to enable or not the internal charge pump */
+    uint16_t model;         /*!< It is a unique code that represent the model */
 
     bool useCustomFont; /*!< Flag to show if user want use custom font or not */
-    uint8_t fontSize;             /*!< Font size setted by user: 1 is default */
-
-#if (LIBOHIBOARD_VERSION < 0x00020000)
-    void (*delayTime)(uint32_t delay);       /*!< Function for blocking delay */
-#endif
 
     /*! Callback for drawPixel function implemented into device implementation */
     GDL_Errors_t (*drawPixel)(void* dev, uint8_t x, uint8_t y, uint8_t color);
