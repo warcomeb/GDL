@@ -49,6 +49,9 @@ extern "C" {
  * \}
  */
 
+/*!
+ * List of possible errors.
+ */
 typedef enum _GDL_Errors_t
 {
     GDL_ERRORS_SUCCESS,
@@ -56,6 +59,10 @@ typedef enum _GDL_Errors_t
     GDL_ERRORS_WRONG_VALUE,
 } GDL_Errors_t;
 
+/*!
+ * List of picture type.
+ * The difference is into color depth per pixel.
+ */
 typedef enum _GDL_PictureType_t
 {
     GDL_PICTURETYPE_1BIT  = 1,
